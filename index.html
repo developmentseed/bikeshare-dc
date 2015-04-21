@@ -6,6 +6,24 @@
 <script src="js/jquery.xml2json.js" type="text/javascript" language="javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
+
+<style>
+    .dock { 
+       width: 2rem;
+       height: 2rem;
+       background: #ccc;
+       margin: 0.5rem;
+       float: left;
+       text-indent: -9999rem;
+    }
+    .station {
+       border-bottom: 1px solid #ccc;
+       height: 4rem;
+    }
+</style>
+
+
+
 <script>
 
 $( document ).ready(function() {
@@ -16,6 +34,21 @@ $( document ).ready(function() {
 		 var stationData = $.xml2json(data.contents);
 		 
 		 console.log(stationData);
+	
+	
+		 $.each(stationData.station, function(index, value) {
+		 
+		    var totalDocks = value.nbBikes + value.nbEmptyDocks;
+		    $('#app').append('<div class="station">');
+		    for (n = 0; n < totalDocks; n++) {
+		      $('#app').append('<div class="dock"></div>');
+            }
+           $('#app').append('</div>');
+         });
+		 
+		 
+		 
+	
 	
 	
 	});
