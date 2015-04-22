@@ -9,8 +9,8 @@
 
 <style>
     .dock { 
-       width: 2rem;
-       height: 2rem;
+       width: 1rem;
+       height: 1rem;
        background: #ccc;
        margin: 0.5rem;
        float: left;
@@ -35,15 +35,23 @@ $( document ).ready(function() {
 		 
 		 console.log(stationData);
 	
-	
+		// For each station
 		 $.each(stationData.station, function(index, value) {
 		 
-		    var totalDocks = value.nbBikes + value.nbEmptyDocks;
-		    $('#app').append('<div class="station">');
-		    for (n = 0; n < totalDocks; n++) {
-		      $('#app').append('<div class="dock"></div>');
+		 	// Add up the number of docks
+		    var totalDocks = parseFloat(value.nbBikes) + parseFloat(value.nbEmptyDocks);
+		     
+		    var docks = ''; 
+		    // Draw a square for each dock
+		    for (var n = 0; n < totalDocks; n++) {
+		      docks += '<div class="dock"></div>';
             }
-           $('#app').append('</div>');
+            
+            $('#app').append('<div class="station">' + docks + '</div>');
+            
+            
+        
+           
          });
 		 
 		 
