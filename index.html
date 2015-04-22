@@ -8,6 +8,15 @@
 
 
 <style>
+    #app {
+       margin: 40px 0;
+    }
+    .meta-value {
+       padding: 20px;
+     }
+     .meta-value b {
+       font-size: 30px;
+     }
     .dock { 
        width: 1rem;
        height: 1rem;
@@ -20,6 +29,9 @@
        border-bottom: 1px solid #ccc;
        height: 4rem;
     }
+    .dock-full {
+      background: #444;
+    }
 </style>
 
 
@@ -28,38 +40,58 @@
 
 $( document ).ready(function() {
 
+
+setInterval(function(){ 
+   init();
+}, 3000);
+
+
+function init() {
+
 	$.getJSON('http://whateverorigin.org/get?url=https%3A//www.capitalbikeshare.com/data/stations/bikeStations.xml&callback=?', function(data){
 		
+		 
+		 $('#app').empty();
 		 
 		 var stationData = $.xml2json(data.contents);
 		 
 		 console.log(stationData);
-	
+
+	    var totalEmptyDocks = 0;
+	    var totalFullDocks = 0;
+	    
 		// For each station
 		 $.each(stationData.station, function(index, value) {
 		 
 		 	// Add up the number of docks
-		    var totalDocks = parseFloat(value.nbBikes) + parseFloat(value.nbEmptyDocks);
+		    var emptyDocks = parseFloat(value.nbEmptyDocks);
+		    var fullDocks = parseFloat(value.nbBikes);
+		    
+		    totalEmptyDocks = emptyDocks + totalEmptyDocks;
+		    totalFullDocks = fullDocks + totalFullDocks;
 		     
-		    var docks = ''; 
-		    // Draw a square for each dock
-		    for (var n = 0; n < totalDocks; n++) {
-		      docks += '<div class="dock"></div>';
+		    var eDocks = ''; 
+		    for (var n = 0; n < emptyDocks; n++) {
+		      eDocks += '<div class="dock dock-empty"></div>';
+            }
+            var fDocks = '';
+		    for (var n = 0; n < fullDocks; n++) {
+		      fDocks += '<div class="dock dock-full"></div>';
             }
             
-            $('#app').append('<div class="station">' + docks + '</div>');
+            $('#app').append('<div class="col-md-12 station">' + fDocks + eDocks + '</div>');
             
-            
-        
            
          });
-		 
-		 
-		 
-	
-	
-	
+         
+         
+         $('#app').prepend('<div class="col-md-3 meta-value">Empty docks <br><b>' + totalEmptyDocks + '</b></div>');
+		 $('#app').prepend('<div class="col-md-3 meta-value">Full docks <br><b>' + totalFullDocks + '</b></div>');
 	});
+		
+}
+
+
 
 });
 
@@ -69,9 +101,10 @@ $( document ).ready(function() {
 
 <body>
 
-
-<div id="app">
- <!-- app lives here -->
+<div class="container">
+	<div id="app" class="row">
+	 <!-- app lives here -->
+	</div>
 </div>
 
 
